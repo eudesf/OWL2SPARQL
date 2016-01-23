@@ -378,6 +378,7 @@ public class OWLClassExpressionToSPARQLConverter implements OWLClassExpressionVi
 	}
 	
 	private String createGroupGraphPattern(OWLClassExpression ce) {
+		sparql = "";
 		ce.accept(this);
 		return "{" + sparql + "}";
 	}
