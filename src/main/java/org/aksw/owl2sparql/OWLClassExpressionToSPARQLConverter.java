@@ -88,18 +88,17 @@ import org.semanticweb.owlapi.vocab.OWLFacet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import uk.ac.manchester.cs.owl.owlapi.OWLDataFactoryImpl;
+import uk.ac.manchester.cs.owlapi.dlsyntax.DLSyntaxObjectRenderer;
+
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Sets;
-import com.hp.hpl.jena.ontology.DataRange;
 import com.hp.hpl.jena.query.Query;
 import com.hp.hpl.jena.query.QueryFactory;
 import com.hp.hpl.jena.query.Syntax;
 import com.hp.hpl.jena.sparql.algebra.Algebra;
 import com.hp.hpl.jena.sparql.algebra.Op;
-
-import uk.ac.manchester.cs.owl.owlapi.OWLDataFactoryImpl;
-import uk.ac.manchester.cs.owlapi.dlsyntax.DLSyntaxObjectRenderer;
 
 /**
  * A converter from
@@ -120,13 +119,13 @@ public class OWLClassExpressionToSPARQLConverter implements OWLClassExpressionVi
 	private Multimap<Integer, OWLEntity> properties = HashMultimap.create();
 	
 	private Map<Integer, Boolean> intersection;
-	private Set<? extends OWLEntity> variableEntities = new HashSet<>();
+	private Set<? extends OWLEntity> variableEntities = new HashSet<OWLEntity>();
 	
 	private VariablesMapping mapping = new VariablesMapping();
 	
 	private OWLClassExpression expr;
 	
-	private Deque<Integer> naryExpressions = new ArrayDeque<>();
+	private Deque<Integer> naryExpressions = new ArrayDeque<Integer>();
 	
 	private OWLClassExpressionMinimizer minimizer = new OWLClassExpressionMinimizer(df);
 	
@@ -148,7 +147,7 @@ public class OWLClassExpressionToSPARQLConverter implements OWLClassExpressionVi
 	
 	private String sparql = "";
 	private String appendix = "";
-	private Stack<String> variables = new Stack<>();
+	private Stack<String> variables = new Stack<String>();
 	
 	private boolean negatedDataRange = false;
 	
@@ -396,7 +395,7 @@ public class OWLClassExpressionToSPARQLConverter implements OWLClassExpressionVi
 		properties.clear();
 		sparql = "";
 		appendix = "";
-		intersection = new HashMap<>();
+		intersection = new HashMap<Integer, Boolean>();
 		mapping.reset();
 	}
 	
@@ -524,14 +523,14 @@ public class OWLClassExpressionToSPARQLConverter implements OWLClassExpressionVi
 		}
 		Collection<OWLEntity> props = properties.get(modalDepth());
 		if(props.size() > 1){
-			Collection<String> vars = new TreeSet<>();
+			Collection<String> vars = new TreeSet<String>();
 			for (OWLEntity p : props) {
 				if(mapping.containsKey(p)){
 					vars.add(mapping.get(p));
 				}
 			}
 			if(vars.size() == 2){
-				List<String> varList = new ArrayList<>(vars);
+				List<String> varList = new ArrayList<String>(vars);
 				sparql += filter(equalExpressions(varList.get(0), varList.get(1), true));
 			}
 		}

@@ -289,7 +289,7 @@ public class OWLAxiomToSPARQLConverter implements OWLAxiomVisitor{
 		OWLClass cls = axiom.getOWLClass();
 		sparql += expressionConverter.asGroupGraphPattern(cls, subjectVar);
 		
-		List<OWLClassExpression> classExpressions = new LinkedList<>(axiom.getClassExpressions());
+		List<OWLClassExpression> classExpressions = new LinkedList<OWLClassExpression>(axiom.getClassExpressions());
 		
 		for(int i = 0; i < classExpressions.size(); i++){
 			sparql += "{";
@@ -345,7 +345,7 @@ public class OWLAxiomToSPARQLConverter implements OWLAxiomVisitor{
 	
 	@Override
 	public void visit(OWLDisjointObjectPropertiesAxiom axiom) {
-		List<OWLObjectPropertyExpression> propertyExpressions = new LinkedList<>(axiom.getProperties());
+		List<OWLObjectPropertyExpression> propertyExpressions = new LinkedList<OWLObjectPropertyExpression>(axiom.getProperties());
 		
 		for(int i = 0; i < propertyExpressions.size(); i++){
 			sparql += "{";
@@ -390,7 +390,7 @@ public class OWLAxiomToSPARQLConverter implements OWLAxiomVisitor{
 	
 	@Override
 	public void visit(OWLDisjointDataPropertiesAxiom axiom) {
-		List<OWLDataPropertyExpression> propertyExpressions = new LinkedList<>(axiom.getProperties());
+		List<OWLDataPropertyExpression> propertyExpressions = new LinkedList<OWLDataPropertyExpression>(axiom.getProperties());
 		
 		for(int i = 0; i < propertyExpressions.size(); i++){
 			sparql += "{";
